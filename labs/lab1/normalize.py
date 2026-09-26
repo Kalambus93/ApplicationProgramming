@@ -29,3 +29,16 @@ def normalize_date(dates: list[str]) -> list[str]:
             temp_list.append("-.-.-")
 
     return temp_list 
+
+def normalize_gender(genders: list[str]) -> list[str]:
+
+    """
+    Нормализует значения пола.
+    :param genders: список строк с исходными значениями пола.
+    :return: список строк, где значения приведены к "Мужской" или "Женский".
+    """
+
+    temp_list = []
+    for i in range(len(genders)):
+        temp_list.append("Мужской") if genders[i] == 'м' or genders[i] == 'М' or genders[i] == 'Мужской' or genders[i] == 'мужской' else temp_list.append("Женский")
+    return temp_list
