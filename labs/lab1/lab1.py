@@ -45,15 +45,6 @@ def main() -> None:
 
     open_file_w(normalize_data_bases)
 
-    for i in range(len(normalize_data_bases[0])):
-        print(f"{i})")
-        print("Фамилия: " + normalize_data_bases[0][i])
-        print("Имя: " + normalize_data_bases[1][i])
-        print("Пол: " + normalize_data_bases[2][i])
-        print("Дата рождения: " + normalize_data_bases[3][i])
-        print("Номер телефона или email: " + normalize_data_bases[4][i])
-        print("Город: " + normalize_data_bases[5][i])
-
 
 if __name__ == "__main__":
     main()
