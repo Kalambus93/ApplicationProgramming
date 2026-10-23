@@ -15,9 +15,12 @@ def main() -> None:
     filename = enter_filename()
 
     try:
-        text = open_file(filename)
+        text = open_file(filename[0])
     except FileNotFoundError as exc:
         print(f"Error:{exc}")
+
+    if text == "":
+        return
 
     patterns = {
         'name': r"Имя:\s*(\w+)",
@@ -43,7 +46,7 @@ def main() -> None:
 
     normalize_data_bases = [surnames, names, genders, dates, data_connections, cities] 
 
-    open_file_w(normalize_data_bases)
+    open_file_w(normalize_data_bases, filename[1])
 
 
 if __name__ == "__main__":
