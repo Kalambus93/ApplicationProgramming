@@ -1,17 +1,24 @@
 import argparse
 
 
-def enter_filename() -> str:
+def enter_filename() -> list[str]:
 
     """
     Получает имя файла из аргументов командной строки.
     :return: имя файла в виде строки.
     """
 
+    list = []
+
     parser = argparse.ArgumentParser()
     parser.add_argument('filename', type = str, help = 'Enter filename')
+    parser.add_argument('write_filename', type = str, help = 'Enter filename for write result')
     args = parser.parse_args()
-    return args.filename
+
+    list.append(args.filename)
+    list.append(args.write_filename)
+
+    return list
 
 def open_file(filename: str) -> str:
 
@@ -31,7 +38,7 @@ def open_file(filename: str) -> str:
     return text
 
 
-def open_file_w(normalize_data_bases: list[list[str]]) -> None:
+def open_file_w(normalize_data_bases: list[list[str]], file_path: str = "result.txt") -> None:
 
     """
     Записывает нормализованные данные в текстовый файл.
@@ -40,7 +47,7 @@ def open_file_w(normalize_data_bases: list[list[str]]) -> None:
     """
 
     try:
-        with open("../data/data_lab1.txt", "w", encoding="utf-8") as file:
+        with open(file_path, "w", encoding="utf-8") as file:
             for i in range(len(normalize_data_bases[0])):
                 file.write(f"{i+1})\n")
                 file.write(f"Фамилия: {normalize_data_bases[0][i]}\n")
