@@ -31,8 +31,13 @@ def main() -> None:
         clean_html, key=lambda b: b["price"], reverse=True
     )[:number_books]
 
+    print(top_expensive_number_books)
+
     # 1.4 Скачивание самых дорогих обложек
     wb.download_expensive_books(top_expensive_number_books, result_dir)
+
+    # 2. Аннотация
+    wb.annotation_csv(annotation, top_expensive_number_books)
 
 
 if __name__ == "__main__":

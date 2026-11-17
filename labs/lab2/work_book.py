@@ -2,6 +2,7 @@ import requests as rq
 from bs4 import BeautifulSoup
 import re
 import os
+import csv
 
 
 def download_dirty_html(path_site: list[str]) -> list[str]:
@@ -47,3 +48,21 @@ def download_expensive_books(books: list[dict], folder: str) -> None:
             f.write(img.content)
 
         i += 1
+
+
+def annotation_csv(path_annotation: str, expensive_books: list[dict]) -> None:
+    abs_pathes = []
+    rel_pathes = []
+
+    for book in expensive_books:
+        rel_path = os.path.relpath(f"../data/lab2/covers/{book["name"]}")
+        abs_path = os.path.abspath(f"../data/lab2/covers/{book["name"]}")
+        rel_pathes.append(rel_path)
+        abs_pathes.append(abs_path)
+
+    with open(path_annotation, mode="w", newline="", encoding="utf-8") as file:
+        writer = csv.writer(file)
+        writer.writerow(["relative_path", "absolute_path"])
+
+        for i in range(len(expensive_books)):
+            writer.writerow([rel_pathes[i], abs_pathes[i]])
