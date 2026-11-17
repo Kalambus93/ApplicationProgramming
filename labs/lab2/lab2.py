@@ -26,6 +26,14 @@ def main() -> None:
     # 1.2 Преобразование в норм текст
     clean_html = wb.download_clean_html(dirty_html)
 
+    # 1.3 Нахождение самых дорогих обложек
+    top_expensive_number_books = sorted(
+        clean_html, key=lambda b: b["price"], reverse=True
+    )[:number_books]
+
+    # 1.4 Скачивание самых дорогих обложек
+    wb.download_expensive_books(top_expensive_number_books, result_dir)
+
 
 if __name__ == "__main__":
     main()
