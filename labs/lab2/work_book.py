@@ -22,9 +22,9 @@ def download_clean_html(dirty_html: list[str]) -> list[dict]:
     for page_html in dirty_html:
         soup = BeautifulSoup(page_html, "html.parser")
 
-        for card in soup.select("article.product_pod"):
-            name = card.select_one("h3 a")["title"]
-            price_text = card.select_one("p.price_color").get_text(strip=True)
+        for card in soup.find_all("article", class_="product_pod"):
+            name = card.find("h3").find("a")["title"]
+            price_text = card.find("p", class_="price_color").get_text(strip=True)
             price = float(re.sub(r"[^\d.]", "", price_text))
 
             books.append({"name": name, "price": price})
