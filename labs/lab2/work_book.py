@@ -6,6 +6,11 @@ import csv
 
 
 def download_dirty_html(path_site: list[str]) -> list[str]:
+    """
+    Функция, которая считывает html код страниц
+    :param path_site: путь сайта
+    :return: грязный html страницы
+    """
 
     pages = []
 
@@ -21,6 +26,12 @@ def download_dirty_html(path_site: list[str]) -> list[str]:
 
 
 def download_clean_html(dirty_html: list[str]) -> list[dict]:
+    """
+    Функция, которая вытаскивает нужные теги (название книги, цена, путь к обложке)
+    :param dirty_html: грязный html
+    :return: список словарей {имя, цена, путь к обложке}
+    """
+
     books: list[dict] = []
 
     for page_html in dirty_html:
@@ -38,6 +49,19 @@ def download_clean_html(dirty_html: list[str]) -> list[dict]:
 
 
 def download_expensive_books(books: list[dict], folder: str) -> None:
+    """
+    Функция, которая скачивает самые дорогие обложки
+    :param books: сортированный список словарей {имя, цена, путь к обложке}
+    :param folder: папка, куда сохранять обложки
+    """
+
+    if os.path.exists(f"{folder}/covers"):
+        for name in os.listdir(f"{folder}/covers"):
+            os.remove(os.path.join(f"{folder}/covers", name))
+        os.rmdir(f"{folder}/covers")
+
+    os.mkdir(f"{folder}/covers")
+
     i = 1
     for book in books:
         url = "https://books.toscrape.com/" + book["cover_src"].replace("../", "")
@@ -47,10 +71,17 @@ def download_expensive_books(books: list[dict], folder: str) -> None:
         with open(path, "wb") as f:
             f.write(img.content)
 
+        print(f"Скачана обложка №{i}")
         i += 1
 
 
 def annotation_csv(path_annotation: str, expensive_books: list[dict]) -> None:
+    """
+    Функция, которая скачивает самые дорогие обложки
+    :param path_annotation: путь аннотации
+    :param expensive_books: сортированный список словарей {имя, цена, путь к обложке}
+    """
+
     abs_pathes = []
     rel_pathes = []
 
@@ -66,3 +97,20 @@ def annotation_csv(path_annotation: str, expensive_books: list[dict]) -> None:
 
         for i in range(len(expensive_books)):
             writer.writerow([rel_pathes[i], abs_pathes[i]])
+
+
+class PathIterator:
+    def __init__(self, csv_file):
+        with open(csv_file, newline="", encoding="utf-8") as f:
+            self.rows = list(csv.DictReader(f))
+        self.i = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.i >= len(self.rows):
+            raise StopIteration
+        row = self.rows[self.i]
+        self.i += 1
+        return row
